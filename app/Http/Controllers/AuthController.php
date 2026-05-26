@@ -29,7 +29,7 @@ class AuthController extends Controller
             'message' => 'Utilisateur créé avec succès',
             'token' => $token,
             'user' => $user
-        ]);
+        ], 201);
     }
 
     // LOGIN
