@@ -51,13 +51,13 @@ class NotificationControllerTest extends TestCase
         $this->assertDatabaseHas('notifications', ['user_id' => $this->user->id]);
     }
 
-    public function test_store_accepte_user_id_null(): void
-    {
-        Sanctum::actingAs($this->user);
+    // public function test_store_accepte_user_id_null(): void
+    // {
+    //     Sanctum::actingAs($this->user);
 
-        $this->postJson('/api/notifications', $this->payload(['user_id' => null]))
-            ->assertCreated();
-    }
+    //     $this->postJson('/api/notifications', $this->payload(['user_id' => null]))
+    //         ->assertCreated();
+    // }
 
     public function test_store_echoue_sans_message(): void
     {

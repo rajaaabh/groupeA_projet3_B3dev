@@ -19,96 +19,140 @@ class SubscriptionControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create();
-        $this->type = SubscriptionType::create([
-            'nom_type'    => 'Mensuel',
-            'duree_jours' => 30,
-            'prix'        => 9.99,
-        ]);
-    }
 
-    private function payload(array $overrides = []): array
-    {
-        return array_merge([
-            'user_id'    => $this->user->id,
-            'type_id'    => $this->type->id,
-            'date_debut' => '2026-01-01',
-            'date_fin'   => '2026-01-31',
-            'statut'     => 'actif',
-        ], $overrides);
+        $this->user = User::factory()->create();
+
+        $this->type = SubscriptionType::create([
+            'nom_type' => 'Mensuel',
+            'duree_jours' => 30,
+            'prix' => 9.99,
+            'description' => 'Abonnement mensuel',
+        ]);
     }
 
     public function test_index_retourne_toutes_les_souscriptions(): void
     {
         Sanctum::actingAs($this->user);
-        Subscription::create($this->payload());
+
+        Subscription::create([
+            'user_id' => $this->user->id,
+            'type_id' => $this->type->id,
+            'date_debut' => now(),
+            'date_fin' => now()->addDays(30),
+            'statut' => 'actif',
+        ]);
 
         $this->getJson('/api/subscriptions')
             ->assertOk()
             ->assertJsonCount(1);
     }
 
-    public function test_store_cree_une_souscription(): void
+    public function test_store_cree_un_abonnement(): void
     {
         Sanctum::actingAs($this->user);
 
-        $this->postJson('/api/subscriptions', $this->payload())
+        $response = $this->postJson('/api/subscriptions', [
+            'type_id' => $this->type->id,
+        ]);
+
+        $response
             ->assertCreated()
-            ->assertJsonFragment(['statut' => 'actif']);
+            ->assertJsonFragment([
+                'message' => 'Abonnement créé avec succès'
+            ]);
 
-        $this->assertDatabaseHas('subscriptions', ['user_id' => $this->user->id]);
+        $this->assertDatabaseHas('subscriptions', [
+            'user_id' => $this->user->id,
+            'type_id' => $this->type->id,
+            'statut' => 'actif',
+        ]);
     }
 
-    public function test_store_echoue_avec_date_fin_avant_debut(): void
+    public function test_creation_abonnement_genere_une_notification(): void
     {
         Sanctum::actingAs($this->user);
 
-        $this->postJson('/api/subscriptions', $this->payload([
-            'date_debut' => '2026-02-01',
-            'date_fin'   => '2026-01-01',
-        ]))->assertUnprocessable();
+        $this->postJson('/api/subscriptions', [
+            'type_id' => $this->type->id,
+        ]);
+
+        $this->assertDatabaseHas('notifications', [
+            'user_id' => $this->user->id,
+            'type' => 'abonnement',
+        ]);
     }
 
-    public function test_store_echoue_avec_statut_invalide(): void
+    public function test_store_echoue_sans_type_id(): void
     {
         Sanctum::actingAs($this->user);
 
-        $this->postJson('/api/subscriptions', $this->payload([
-            'statut' => 'invalide',
-        ]))->assertUnprocessable();
+        $this->postJson('/api/subscriptions', [])
+            ->assertUnprocessable();
     }
 
     public function test_show_retourne_une_souscription(): void
     {
         Sanctum::actingAs($this->user);
-        $sub = Subscription::create($this->payload());
 
-        $this->getJson("/api/subscriptions/{$sub->id}")
+        $subscription = Subscription::create([
+            'user_id' => $this->user->id,
+            'type_id' => $this->type->id,
+            'date_debut' => now(),
+            'date_fin' => now()->addDays(30),
+            'statut' => 'actif',
+        ]);
+
+        $this->getJson("/api/subscriptions/{$subscription->id}")
             ->assertOk()
-            ->assertJsonFragment(['statut' => 'actif']);
+            ->assertJsonFragment([
+                'statut' => 'actif'
+            ]);
     }
 
-    public function test_update_modifie_une_souscription(): void
+    public function test_update_modifie_le_statut(): void
     {
         Sanctum::actingAs($this->user);
-        $sub = Subscription::create($this->payload());
 
-        $this->putJson("/api/subscriptions/{$sub->id}", ['statut' => 'inactif'])
+        $subscription = Subscription::create([
+            'user_id' => $this->user->id,
+            'type_id' => $this->type->id,
+            'date_debut' => now(),
+            'date_fin' => now()->addDays(30),
+            'statut' => 'actif',
+        ]);
+
+        $this->putJson("/api/subscriptions/{$subscription->id}", [
+            'statut' => 'inactif',
+        ])
             ->assertOk()
-            ->assertJsonFragment(['statut' => 'inactif']);
+            ->assertJsonFragment([
+                'statut' => 'inactif'
+            ]);
     }
 
     public function test_destroy_supprime_une_souscription(): void
     {
         Sanctum::actingAs($this->user);
-        $sub = Subscription::create($this->payload());
 
-        $this->deleteJson("/api/subscriptions/{$sub->id}")->assertNoContent();
-        $this->assertDatabaseMissing('subscriptions', ['id' => $sub->id]);
+        $subscription = Subscription::create([
+            'user_id' => $this->user->id,
+            'type_id' => $this->type->id,
+            'date_debut' => now(),
+            'date_fin' => now()->addDays(30),
+            'statut' => 'actif',
+        ]);
+
+        $this->deleteJson("/api/subscriptions/{$subscription->id}")
+            ->assertOk();
+
+        $this->assertDatabaseMissing('subscriptions', [
+            'id' => $subscription->id,
+        ]);
     }
 
     public function test_non_authentifie_retourne_401(): void
     {
-        $this->getJson('/api/subscriptions')->assertUnauthorized();
+        $this->getJson('/api/subscriptions')
+            ->assertUnauthorized();
     }
 }

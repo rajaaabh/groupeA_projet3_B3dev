@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Models\User;
+use Laravel\Sanctum\Sanctum;
 
 class AuthTest extends TestCase
 {
@@ -44,5 +46,32 @@ class AuthTest extends TestCase
                      'token',
                      'user'
                  ]);
+    }
+
+        public function test_user_cannot_login_with_wrong_password()
+    {
+        $this->postJson('/api/register', [
+            'name' => 'Rajaa',
+            'email' => 'rajaa@test.com',
+            'password' => '123456'
+        ]);
+
+        $response = $this->postJson('/api/login', [
+            'email' => 'rajaa@test.com',
+            'password' => 'mauvaismotdepasse'
+        ]);
+
+        $response->assertStatus(401);
+    }
+    
+    public function test_user_can_logout()
+    {
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user);
+
+        $response = $this->postJson('/api/logout');
+
+        $response->assertStatus(200);
     }
 }
