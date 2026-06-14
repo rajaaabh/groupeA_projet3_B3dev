@@ -20,7 +20,7 @@ class NotificationController extends Controller
             'user_id'    => 'nullable|exists:users,id',
             'message'    => 'required|string',
             'type'       => 'required|string|max:255',
-            'date_denvoi'=> 'nullable|date',
+            'date_envoi'=> 'nullable|date',
             'lu'         => 'boolean',
         ]);
 

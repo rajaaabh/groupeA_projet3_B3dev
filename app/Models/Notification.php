@@ -2,22 +2,34 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['user_id', 'message', 'type', 'date_denvoi', 'lu'])]
 class Notification extends Model
 {
+    protected $fillable = [
+        'user_id',
+        'subscription_id',
+        'message',
+        'type',
+        'date_envoi',
+        'lu',
+    ];
+
     protected function casts(): array
     {
         return [
             'lu' => 'boolean',
-            'date_denvoi' => 'datetime',
+            'date_envoi' => 'datetime',
         ];
     }
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function subscription()
+    {
+        return $this->belongsTo(Subscription::class);
     }
 }

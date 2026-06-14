@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['user_id', 'type_id', 'date_debut', 'date_fin', 'statut'])]
 class Subscription extends Model
 {
+    protected $fillable = [
+        'user_id',
+        'type_id',
+        'date_debut',
+        'date_fin',
+        'statut',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
