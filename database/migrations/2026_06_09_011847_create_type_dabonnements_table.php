@@ -11,10 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('type_dabonnements', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+            Schema::create('type_dabonnements', function (Blueprint $table) {
+
+        $table->id();
+
+        $table->string('nom_type');
+
+        $table->integer('duree_jours');
+
+        $table->decimal('prix', 10, 2);
+
+        $table->text('description')->nullable();
+
+        $table->timestamps();
+    });
     }
 
     /**

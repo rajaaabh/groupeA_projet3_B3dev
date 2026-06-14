@@ -33,7 +33,7 @@ class User extends Authenticatable
         ];
     }
 
-    public function subscriptions()
+        public function subscriptions()
     {
         return $this->hasMany(Subscription::class);
     }

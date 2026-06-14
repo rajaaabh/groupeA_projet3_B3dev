@@ -12,22 +12,25 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('subscriptions', function (Blueprint $table) {
-            $table->id();
 
-            $table->foreignId('user_id')
-                ->constrained()
-                ->onDelete('cascade');
+        $table->id();
 
-            $table->string('type');
+        $table->foreignId('user_id')
+            ->constrained()
+            ->onDelete('cascade');
 
-            $table->date('start_date');
+        $table->foreignId('type_dabonnement_id')
+            ->constrained('type_dabonnements')
+            ->onDelete('cascade');
 
-            $table->date('end_date');
+        $table->date('start_date');
 
-            $table->string('status');
+        $table->date('end_date');
 
-            $table->timestamps();
-        });
+        $table->string('status');
+
+        $table->timestamps();
+    });
     }
 
     /**

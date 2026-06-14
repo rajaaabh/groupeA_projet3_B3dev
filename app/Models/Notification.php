@@ -6,10 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notification extends Model
 {
-    protected $fillable = [
+        protected $fillable = [
         'user_id',
+        'subscription_id',
         'message',
-        'sent_at'
+        'type',
+        'date_envoi',
+        'lu'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function subscription()
+    {
+        return $this->belongsTo(Subscription::class);
+    }
 
 }

@@ -10,12 +10,15 @@ class Type_dabonnement extends Model
     /** @use HasFactory<\Database\Factories\TypeDabonnementFactory> */
     use HasFactory;
 
-    protected $fillable = [
-        'type_id',
+        protected $fillable = [
         'nom_type',
         'duree_jours',
         'prix',
         'description'
     ];
-    
+
+        public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
 }
