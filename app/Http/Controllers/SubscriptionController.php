@@ -7,59 +7,58 @@ use Illuminate\Http\Request;
 
 class SubscriptionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return response()->json(
+            Subscription::with(['user', 'subscriptionType'])->get()
+        );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'user_id'    => 'required|exists:users,id',
+            'type_id'    => 'required|exists:subscription_types,id',
+            'date_debut' => 'required|date',
+            'date_fin'   => 'required|date|after:date_debut',
+            'statut'     => 'required|string|in:actif,inactif,expiré',
+        ]);
+
+        $subscription = Subscription::create($validated);
+
+        return response()->json(
+            $subscription->load(['user', 'subscriptionType']),
+            201
+        );
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Subscription $subscription)
     {
-        //
+        return response()->json(
+            $subscription->load(['user', 'subscriptionType'])
+        );
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Subscription $subscription)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Subscription $subscription)
     {
-        //
+        $validated = $request->validate([
+            'type_id'    => 'sometimes|exists:subscription_types,id',
+            'date_debut' => 'sometimes|date',
+            'date_fin'   => 'sometimes|date|after:date_debut',
+            'statut'     => 'sometimes|string|in:actif,inactif,expiré',
+        ]);
+
+        $subscription->update($validated);
+
+        return response()->json(
+            $subscription->load(['user', 'subscriptionType'])
+        );
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Subscription $subscription)
     {
-        //
+        $subscription->delete();
+
+        return response()->json(null, 204);
     }
 }
