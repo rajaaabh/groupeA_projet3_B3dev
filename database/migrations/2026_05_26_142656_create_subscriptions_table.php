@@ -6,36 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('subscriptions', function (Blueprint $table) {
-
-        $table->id();
-
-        $table->foreignId('user_id')
-            ->constrained()
-            ->onDelete('cascade');
-
-        $table->foreignId('type_dabonnement_id')
-            ->constrained('type_dabonnements')
-            ->onDelete('cascade');
-
-        $table->date('start_date');
-
-        $table->date('end_date');
-
-        $table->string('status');
-
-        $table->timestamps();
-    });
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('type_id')->constrained('subscription_types')->onDelete('cascade');
+            $table->date('date_debut');
+            $table->date('date_fin');
+            $table->string('statut');
+            $table->timestamps();
+        });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('subscriptions');

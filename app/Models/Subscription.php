@@ -2,31 +2,19 @@
 
 namespace App\Models;
 
-use App\Http\Controllers\TypeDabonnementController;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
+#[Fillable(['user_id', 'type_id', 'date_debut', 'date_fin', 'statut'])]
 class Subscription extends Model
 {
-        protected $fillable = [
-        'user_id',
-        'type_abonnement_id',
-        'start_date',
-        'end_date',
-        'status'
-    ];
-
     public function user()
-{
-    return $this->belongsTo(User::class);
-}
-
-    public function typeAbonnement()
     {
-        return $this->belongsTo(Type_dabonnement::class);
+        return $this->belongsTo(User::class);
     }
 
-    public function notifications()
+    public function subscriptionType()
     {
-        return $this->hasMany(Notification::class);
+        return $this->belongsTo(SubscriptionType::class, 'type_id');
     }
 }
