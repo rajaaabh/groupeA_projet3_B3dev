@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import './Auth.css'
 
 function Register() {
   const [form, setForm] = useState({ name: '', email: '', password: '', password_confirmation: '' })
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -32,7 +34,7 @@ function Register() {
       }
       localStorage.setItem('token', data.token)
       setSuccess(true)
-      // TODO: rediriger vers le dashboard
+      navigate('/dashboard')
     } catch {
       setError('Impossible de contacter le serveur.')
     }
