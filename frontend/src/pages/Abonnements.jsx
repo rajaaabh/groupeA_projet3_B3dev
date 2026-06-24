@@ -7,10 +7,11 @@ import './Abonnements.css'
 function Abonnements() {
   const navigate = useNavigate()
 
+  // Fallback affiché uniquement si l'API ne répond pas — les boutons sont désactivés car les IDs n'existent pas en base
   const fallback = [
-    { id: 1, nom_type: 'ESSENTIEL', prix: 29, duree_jours: 30, description: 'Accès salle · Vestiaires' },
-    { id: 2, nom_type: 'PREMIUM',   prix: 49, duree_jours: 30, description: 'Accès illimité · Tous les cours · Coaching personnalisé' },
-    { id: 3, nom_type: 'ÉTUDIANT',  prix: 19, duree_jours: 30, description: 'Accès hors-pic · Tarif réduit' },
+    { id: null, nom_type: 'MENSUEL',      prix: 9.99,  duree_jours: 30,  description: 'Abonnement mensuel renouvelable chaque mois.' },
+    { id: null, nom_type: 'TRIMESTRIEL',  prix: 24.99, duree_jours: 90,  description: 'Abonnement trimestriel avec une réduction de 17%.' },
+    { id: null, nom_type: 'ANNUEL',       prix: 89.99, duree_jours: 365, description: 'Abonnement annuel, la meilleure offre avec 25% de réduction.' },
   ]
 
   const [types, setTypes] = useState([])
@@ -103,9 +104,10 @@ function Abonnements() {
                   <button
                     className={`abo-btn ${isFeatured ? 'abo-btn-featured' : 'abo-btn-default'}`}
                     onClick={() => handleSubscribe(type.id)}
-                    disabled={submitting}
+                    disabled={submitting || !type.id}
+                    title={!type.id ? 'Service temporairement indisponible' : ''}
                   >
-                    {submitting ? 'En cours...' : 'Rejoindre'}
+                    {submitting ? 'En cours...' : !type.id ? 'Indisponible' : 'Rejoindre'}
                   </button>
 
                 </div>

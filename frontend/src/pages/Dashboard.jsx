@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
-import { getUser, getSubscriptions, getNotifications } from '../services/api'
+import { getUser, getSubscriptions, getNotifications, deleteSubscription } from '../services/api'
 import './Dashboard.css'
 
 function Dashboard() {
@@ -15,6 +15,7 @@ function Dashboard() {
   // État pour gérer le chargement et les erreurs
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [cancelling, setCancelling] = useState(false)
 
   // Au chargement de la page, on récupère toutes les données
   useEffect(() => {
@@ -47,6 +48,20 @@ function Dashboard() {
 
     fetchData()
   }, [navigate])
+
+  // Résilier un abonnement
+  const handleCancel = async (subId) => {
+    if (!window.confirm('Confirmer la résiliation de cet abonnement ?')) return
+    setCancelling(true)
+    try {
+      await deleteSubscription(subId)
+      setSubscriptions(subscriptions.filter(s => s.id !== subId))
+    } catch {
+      setError('Impossible de résilier l\'abonnement.')
+    } finally {
+      setCancelling(false)
+    }
+  }
 
   // Pendant le chargement, on affiche un message
   if (loading) {
@@ -103,9 +118,18 @@ function Dashboard() {
                   <p className="sub-item-dates">
                     Du {formatDate(sub.date_debut)} au {formatDate(sub.date_fin)}
                   </p>
-                  <span className={`sub-status ${sub.statut === 'actif' ? 'active' : 'inactive'}`}>
-                    {sub.statut === 'actif' ? 'Actif' : 'Inactif'}
-                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px' }}>
+                    <span className={`sub-status ${sub.statut === 'actif' ? 'active' : 'inactive'}`}>
+                      {sub.statut === 'actif' ? 'Actif' : 'Inactif'}
+                    </span>
+                    <button
+                      className="btn-cancel"
+                      onClick={() => handleCancel(sub.id)}
+                      disabled={cancelling}
+                    >
+                      Résilier
+                    </button>
+                  </div>
                 </div>
               ))
             )}

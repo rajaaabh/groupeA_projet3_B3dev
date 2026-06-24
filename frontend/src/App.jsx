@@ -4,6 +4,7 @@ import Register from './pages/Register'
 import Home from './pages/Home'
 import Dashboard from './pages/Dashboard'
 import Abonnements from './pages/Abonnements'
+import NotFound from './pages/NotFound'
 
 const isAuthenticated = () => !!localStorage.getItem('token')
 
@@ -34,6 +35,7 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   )
