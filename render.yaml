@@ -2,16 +2,16 @@ databases:
   - name: gymflow-db
     plan: free
     databaseName: gymflow
-    databaseUser: gymflow
 
 services:
 
-  # ── Backend Laravel ─────────────────────────────────────────
+  # -- Backend Laravel (PHP natif via Nixpacks) --
   - type: web
     name: gymflow-backend
     plan: free
     rootDir: backend
-    dockerfilePath: ./Dockerfile
+    buildCommand: composer install --no-dev --optimize-autoloader --no-interaction
+    startCommand: php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT
     envVars:
       - key: APP_ENV
         value: production
@@ -28,10 +28,9 @@ services:
       - key: FRONTEND_URL
         value: https://gymflow-frontend.onrender.com
 
-  # ── Frontend React ──────────────────────────────────────────
-  - type: web
+  # -- Frontend React (Static) --
+  - type: static
     name: gymflow-frontend
-    plan: free
     rootDir: frontend
     buildCommand: npm ci && npm run build
     staticPublishPath: dist
