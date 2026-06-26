@@ -29,7 +29,7 @@ services:
         value: https://gymflow-frontend.onrender.com
 
   # -- Frontend React (Static) --
-  - type: static
+  - type: web
     name: gymflow-frontend
     rootDir: frontend
     buildCommand: npm ci && npm run build
