@@ -33,8 +33,9 @@ function Register() {
         return
       }
       localStorage.setItem('token', data.token)
-      setSuccess(true)
+      localStorage.setItem('user', JSON.stringify(data.user))
       navigate('/dashboard')
+      setSuccess(true)
     } catch {
       setError('Impossible de contacter le serveur.')
     }

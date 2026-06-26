@@ -27,7 +27,14 @@ function Login() {
         return
       }
       localStorage.setItem('token', data.token)
-      navigate('/dashboard')
+      localStorage.setItem('user', JSON.stringify(data.user))
+
+      if (data.user.role === 'admin') {
+        navigate('/admin')
+      } else {
+        navigate('/dashboard')
+      }
+     
       
     } catch {
       setError('Impossible de contacter le serveur.')
