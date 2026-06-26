@@ -2,7 +2,6 @@ databases:
   - name: gymflow-db
     plan: free
     databaseName: gymflow
-    databaseUser: gymflow
 
 services:
 
