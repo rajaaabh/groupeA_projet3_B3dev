@@ -1,11 +1,10 @@
-services:
-
-  # ── Base de données PostgreSQL ──────────────────────────────
-  - type: pserv
-    name: gymflow-db
+databases:
+  - name: gymflow-db
     plan: free
     databaseName: gymflow
     databaseUser: gymflow
+
+services:
 
   # ── Backend Laravel ─────────────────────────────────────────
   - type: web
