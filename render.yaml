@@ -2,15 +2,17 @@ databases:
   - name: gymflow-db
     plan: free
     databaseName: gymflow
+    databaseUser: gymflow
 
 services:
 
-  # ── Backend Laravel (Docker) ─────────────────────────────────
+  # ── Backend Laravel (PHP natif via Nixpacks) ─────────────────
   - type: web
     name: gymflow-backend
-    runtime: docker
+    plan: free
     rootDir: backend
-    dockerfilePath: ./Dockerfile
+    buildCommand: composer install --no-dev --optimize-autoloader --no-interaction
+    startCommand: php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT
     envVars:
       - key: APP_ENV
         value: production
@@ -31,6 +33,7 @@ services:
   - type: web
     name: gymflow-frontend
     runtime: static
+    plan: free
     rootDir: frontend
     buildCommand: npm ci && npm run build
     staticPublishPath: dist
