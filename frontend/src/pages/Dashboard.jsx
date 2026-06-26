@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
-import { getUser, getSubscriptions, getNotifications, deleteSubscription } from '../services/api'
+import { getUser, getSubscriptions, getNotifications, deleteSubscription, updateProfile } from '../services/api'
 import './Dashboard.css'
 
 function Dashboard() {
@@ -16,6 +16,11 @@ function Dashboard() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [cancelling, setCancelling] = useState(false)
+  const [showProfileModal, setShowProfileModal] = useState(false)
+  const [profileForm, setProfileForm] = useState({ name: '', password: '', password_confirmation: '' })
+  const [profileError, setProfileError] = useState('')
+  const [profileSuccess, setProfileSuccess] = useState(false)
+  const [savingProfile, setSavingProfile] = useState(false)
 
   // Au chargement de la page, on récupère toutes les données
   useEffect(() => {
@@ -50,6 +55,44 @@ function Dashboard() {
   }, [navigate])
 
   // Résilier un abonnement
+  const openProfileModal = () => {
+    setProfileForm({ name: user?.name || '', password: '', password_confirmation: '' })
+    setProfileError('')
+    setProfileSuccess(false)
+    setShowProfileModal(true)
+  }
+
+  const handleUpdateProfile = async (e) => {
+    e.preventDefault()
+    setProfileError('')
+    if (profileForm.password && profileForm.password !== profileForm.password_confirmation) {
+      setProfileError('Les mots de passe ne correspondent pas.')
+      return
+    }
+    setSavingProfile(true)
+    try {
+      const payload = { name: profileForm.name }
+      if (profileForm.password) {
+        payload.password = profileForm.password
+        payload.password_confirmation = profileForm.password_confirmation
+      }
+      const data = await updateProfile(payload)
+      if (data.errors || !data.user) {
+        const firstError = Object.values(data.errors || {})[0]?.[0] || data.message
+        setProfileError(firstError || 'Une erreur est survenue.')
+        return
+      }
+      setUser(data.user)
+      localStorage.setItem('user', JSON.stringify(data.user))
+      setProfileSuccess(true)
+      setTimeout(() => setShowProfileModal(false), 1200)
+    } catch {
+      setProfileError('Impossible de contacter le serveur.')
+    } finally {
+      setSavingProfile(false)
+    }
+  }
+
   const handleCancel = async (subId) => {
     if (!window.confirm('Confirmer la résiliation de cet abonnement ?')) return
     setCancelling(true)
@@ -77,6 +120,59 @@ function Dashboard() {
     <div className="dashboard-page page-enter">
       <Navbar />
 
+      {showProfileModal && (
+        <div className="profile-modal-overlay" onClick={() => setShowProfileModal(false)}>
+          <div className="profile-modal" onClick={e => e.stopPropagation()}>
+            <div className="profile-modal-header">
+              <h2>Modifier mon profil</h2>
+              <button className="profile-modal-close" onClick={() => setShowProfileModal(false)}>✕</button>
+            </div>
+
+            {profileSuccess ? (
+              <p className="profile-success">Profil mis à jour ✓</p>
+            ) : (
+              <form onSubmit={handleUpdateProfile} className="profile-modal-form">
+                {profileError && <div className="dash-error">{profileError}</div>}
+
+                <div className="profile-field">
+                  <label>Nom</label>
+                  <input
+                    type="text"
+                    value={profileForm.name}
+                    onChange={e => setProfileForm({ ...profileForm, name: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <div className="profile-field">
+                  <label>Nouveau mot de passe <span>(laisser vide pour ne pas changer)</span></label>
+                  <input
+                    type="password"
+                    placeholder="••••••"
+                    value={profileForm.password}
+                    onChange={e => setProfileForm({ ...profileForm, password: e.target.value })}
+                  />
+                </div>
+
+                <div className="profile-field">
+                  <label>Confirmer le mot de passe</label>
+                  <input
+                    type="password"
+                    placeholder="••••••"
+                    value={profileForm.password_confirmation}
+                    onChange={e => setProfileForm({ ...profileForm, password_confirmation: e.target.value })}
+                  />
+                </div>
+
+                <button type="submit" className="btn-subscribe" disabled={savingProfile}>
+                  {savingProfile ? 'Enregistrement...' : 'Enregistrer'}
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
+
       <div className="dashboard-content">
 
         {/* Message d'erreur si le fetch a échoué */}
@@ -93,7 +189,10 @@ function Dashboard() {
 
           {/* Carte : profil utilisateur */}
           <div className="dash-card">
-            <span className="dash-card-label">Mon profil</span>
+            <div className="profile-card-header">
+              <span className="dash-card-label">Mon profil</span>
+              <button className="btn-edit-profile" onClick={openProfileModal}>Modifier</button>
+            </div>
             <p className="user-name">{user?.name}</p>
             <p className="user-email">{user?.email}</p>
           </div>

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getSubscriptions, getSubscriptionTypes, updateSubscription, deleteSubscription, logout } from '../services/api'
 
+const BASE = import.meta.env.VITE_API_URL || 'http://localhost:9000'
+
 function Admin() {
   const [users, setUsers] = useState([])
   const [subscriptions, setSubscriptions] = useState([])
@@ -24,7 +26,7 @@ function Admin() {
       const [subsData, typesData, usersData] = await Promise.all([
         getSubscriptions(),
         getSubscriptionTypes(),
-        fetch('http://localhost:8000/api/users', {
+        fetch(`${BASE}/api/users`, {
           headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
         }).then(r => r.json()),
       ])
@@ -61,7 +63,7 @@ function Admin() {
     if (!newType.nom_type || !newType.duree_jours || !newType.prix) return
     try {
       const token = localStorage.getItem('token')
-      await fetch('http://localhost:8000/api/subscription-types', {
+      await fetch(`${BASE}/api/subscription-types`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ ...newType, duree_jours: parseInt(newType.duree_jours), prix: parseFloat(newType.prix) })
@@ -75,7 +77,7 @@ function Admin() {
   const handleDeleteType = (id) => {
     askConfirm("Supprimer ce type d'abonnement ?", async () => {
       const token = localStorage.getItem('token')
-      await fetch(`http://localhost:8000/api/subscription-types/${id}`, {
+      await fetch(`${BASE}/api/subscription-types/${id}`, {
         method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` }
       })
       fetchAll()
@@ -85,7 +87,7 @@ function Admin() {
   const handleDeleteUser = (id) => {
     askConfirm('Supprimer cet utilisateur ?', async () => {
       const token = localStorage.getItem('token')
-      await fetch(`http://localhost:8000/api/users/${id}`, {
+      await fetch(`${BASE}/api/users/${id}`, {
         method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` }
       })
       fetchAll()

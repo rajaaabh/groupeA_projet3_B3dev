@@ -39,5 +39,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('notifications', NotificationController::class);
 
     Route::get('/users', [UserController::class, 'index']);
+    Route::put('/user/profile', [UserController::class, 'updateProfile']);
     Route::delete('/users/{user}', [UserController::class, 'destroy']);
 });

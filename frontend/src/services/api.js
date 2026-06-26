@@ -73,3 +73,11 @@ export const getNotifications = () =>
   fetch(`${API_URL}/notifications`, {
     headers: getHeaders()
   }).then(res => res.json())
+
+// PROFIL
+export const updateProfile = (data) =>
+  fetch(`${API_URL}/user/profile`, {
+    method: 'PUT',
+    headers: getHeaders(),
+    body: JSON.stringify(data)
+  }).then(res => res.json())
