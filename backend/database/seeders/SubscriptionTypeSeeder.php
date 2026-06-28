@@ -31,7 +31,7 @@ class SubscriptionTypeSeeder extends Seeder
         ];
 
         foreach ($types as $type) {
-            SubscriptionType::create($type);
+            SubscriptionType::firstOrCreate(['nom_type' => $type['nom_type']], $type);
         }
     }
 }
