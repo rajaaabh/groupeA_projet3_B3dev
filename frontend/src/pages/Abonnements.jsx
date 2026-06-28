@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
-import { getSubscriptionTypes, createSubscription } from '../services/api'
+import { getSubscriptionTypes } from '../services/api'
 import './Abonnements.css'
 
 function Abonnements() {
@@ -16,7 +16,6 @@ function Abonnements() {
 
   const [types, setTypes] = useState([])
   const [loading, setLoading] = useState(true)
-  const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
 
   // Charger les types d'abonnements disponibles
@@ -33,27 +32,19 @@ function Abonnements() {
       })
   }, [])
 
-  // Souscrire à un abonnement
-  const handleSubscribe = async (typeId) => {
-    setSubmitting(true)
-    setError('')
-    try {
-      const res = await createSubscription({ type_id: typeId })
-
-      // L'API retourne un message d'erreur si quelque chose s'est mal passé
-      if (res.errors || res.message === 'Unauthenticated.') {
-        const firstError = Object.values(res.errors || {})[0]?.[0] || res.message
-        setError(firstError || 'Une erreur est survenue.')
-        return
-      }
-
-      // Succès — on redirige vers le dashboard
-      navigate('/dashboard')
-    } catch {
-      setError('Impossible de contacter le serveur.')
-    } finally {
-      setSubmitting(false)
-    }
+  // Rediriger vers la page de paiement avec les infos du plan
+  const handleSubscribe = (typeId, type) => {
+    if (!typeId) return
+    navigate('/paiement', {
+      state: {
+        plan: {
+          id: typeId,
+          name: type.nom_type,
+          price: String(type.prix),
+          duration: `${type.duree_jours} jours`,
+        },
+      },
+    })
   }
 
   return (
@@ -103,11 +94,11 @@ function Abonnements() {
 
                   <button
                     className={`abo-btn ${isFeatured ? 'abo-btn-featured' : 'abo-btn-default'}`}
-                    onClick={() => handleSubscribe(type.id)}
-                    disabled={submitting || !type.id}
+                    onClick={() => handleSubscribe(type.id, type)}
+                    disabled={!type.id}
                     title={!type.id ? 'Service temporairement indisponible' : ''}
                   >
-                    {submitting ? 'En cours...' : !type.id ? 'Indisponible' : 'Rejoindre'}
+                    {!type.id ? 'Indisponible' : 'Rejoindre'}
                   </button>
 
                 </div>

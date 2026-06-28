@@ -4,6 +4,7 @@ import Register from './pages/Register'
 import Home from './pages/Home'
 import Dashboard from './pages/Dashboard'
 import Abonnements from './pages/Abonnements'
+import Payment from './pages/Payment'
 import NotFound from './pages/NotFound'
 import Admin from './pages/Admin'
 
@@ -50,6 +51,14 @@ function App() {
             <AdminRoute>
               <Admin />
             </AdminRoute>
+          }
+        />
+        <Route
+          path="/paiement"
+          element={
+            <PrivateRoute>
+              <Payment />
+            </PrivateRoute>
           }
         />
         <Route path="*" element={<NotFound />} />
