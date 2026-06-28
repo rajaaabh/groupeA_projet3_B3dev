@@ -187,9 +187,14 @@ function Admin() {
             Admin
           </span>
         </div>
-        <button onClick={handleLogout} className="px-3 md:px-5 py-2 bg-white/5 border border-white/10 text-white/60 rounded-full text-sm font-semibold font-['Inter'] hover:bg-white/10 transition-colors">
-          Déconnexion
-        </button>
+        <div className="flex items-center gap-2 md:gap-3">
+          <button onClick={() => navigate('/')} className="px-3 md:px-5 py-2 bg-white/5 border border-white/10 text-white/60 rounded-full text-sm font-semibold font-['Inter'] hover:bg-white/10 transition-colors">
+            Accueil
+          </button>
+          <button onClick={handleLogout} className="px-3 md:px-5 py-2 bg-white/5 border border-white/10 text-white/60 rounded-full text-sm font-semibold font-['Inter'] hover:bg-white/10 transition-colors">
+            Déconnexion
+          </button>
+        </div>
       </nav>
 
       <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-10">
