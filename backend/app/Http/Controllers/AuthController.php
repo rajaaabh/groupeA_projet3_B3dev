@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Mail\WelcomeMail;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\LoginNotificationMail;
 
 class AuthController extends Controller
 {
@@ -24,6 +27,8 @@ class AuthController extends Controller
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
+        Mail::to($user->email)->send(new WelcomeMail($user));
+
 
         return response()->json([
             'message' => 'Utilisateur créé avec succès',
@@ -45,6 +50,7 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;
+        Mail::to($user->email)->send(new LoginNotificationMail($user));
 
         return response()->json([
             'message' => 'Connexion réussie',

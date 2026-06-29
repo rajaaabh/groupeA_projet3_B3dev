@@ -1,0 +1,69 @@
+config:
+  target: "https://gymflow-backend.onrender.com"
+  phases:
+    - duration: 20
+      arrivalRate: 1
+      name: "Montée en charge"
+    - duration: 20
+      arrivalRate: 3
+      name: "Charge normale"
+    - duration: 20
+      arrivalRate: 5
+      name: "Pic de charge"
+  defaults:
+    headers:
+      Content-Type: "application/json"
+      Accept: "application/json"
+
+scenarios:
+  - name: "Test inscription et connexion"
+    weight: 40
+    flow:
+      - post:
+          url: "/api/login"
+          json:
+            email: "rajooo@gmail.com"
+            password: "rajooo789"
+          capture:
+            - json: "$.token"
+              as: "token"
+      - get:
+          url: "/api/subscription-types"
+          headers:
+            Authorization: "Bearer {{ token }}"
+      - get:
+          url: "/api/subscriptions"
+          headers:
+            Authorization: "Bearer {{ token }}"
+
+  - name: "Test notifications"
+    weight: 30
+    flow:
+      - post:
+          url: "/api/login"
+          json:
+            email: "rajooo@gmail.com"
+            password: "rajooo789"
+          capture:
+            - json: "$.token"
+              as: "token"
+      - get:
+          url: "/api/notifications"
+          headers:
+            Authorization: "Bearer {{ token }}"
+
+  - name: "Test types abonnements public"
+    weight: 30
+    flow:
+      - post:
+          url: "/api/login"
+          json:
+            email: "rajooo@gmail.com"
+            password: "rajooo789"
+          capture:
+            - json: "$.token"
+              as: "token"
+      - get:
+          url: "/api/subscription-types"
+          headers:
+            Authorization: "Bearer {{ token }}"

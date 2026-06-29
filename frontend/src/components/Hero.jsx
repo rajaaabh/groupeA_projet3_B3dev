@@ -36,31 +36,31 @@ function Hero() {
           <span className="text-white/70 text-sm font-['Inter']">Noté 4.9 sur 5.0</span>
         </div>
 
-        <div className="flex items-end justify-between gap-6">
-          <h1 className="font-['Bebas_Neue'] text-[clamp(3rem,7vw,5.5rem)] text-white leading-none tracking-wide max-w-2xl">
-            Entraîne-toi plus fort.<br />
-            Suis tes progrès. <span className="text-[#FF5500]">Dépasse-toi.</span>
-          </h1>
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+            <h1 className="font-['Bebas_Neue'] text-[clamp(3rem,7vw,5.5rem)] text-white leading-none tracking-wide max-w-2xl">
+              Entraîne-toi plus fort.<br />
+              Suis tes progrès. <span className="text-[#FF5500]">Dépasse-toi.</span>
+            </h1>
 
-          <div className="shrink-0 flex flex-col items-end">
-            <div className="bg-[#FF5500] rounded-2xl p-4 flex items-center gap-4 min-w-57.5">
-              <div className="text-white">
-                <div className="text-[10px] opacity-70 font-['Inter'] uppercase tracking-widest mb-0.5">Inscription gratuite</div>
-                <div className="font-semibold font-['Inter'] text-sm">Créer mon compte</div>
+            <div className="shrink-0 flex flex-col items-start md:items-end">
+              <div className="bg-[#FF5500] rounded-2xl p-4 flex items-center gap-4 w-full md:min-w-57.5">
+                <div className="text-white">
+                  <div className="text-[10px] opacity-70 font-['Inter'] uppercase tracking-widest mb-0.5">Inscription gratuite</div>
+                  <div className="font-semibold font-['Inter'] text-sm">Créer mon compte</div>
+                </div>
+                <Link
+                  to="/register"
+                  className="ml-auto w-9 h-9 bg-white rounded-xl flex items-center justify-center text-[#FF5500] text-lg font-bold hover:bg-gray-100 transition-colors shrink-0"
+                >
+                  →
+                </Link>
               </div>
-              <Link
-                to="/register"
-                className="ml-auto w-9 h-9 bg-white rounded-xl flex items-center justify-center text-[#FF5500] text-lg font-bold hover:bg-gray-100 transition-colors shrink-0"
-              >
-                →
-              </Link>
+              <p className="text-white/40 text-xs font-['Inter'] mt-2 text-left md:text-right">
+                Sans engagement. Résilie quand tu veux.
+              </p>
             </div>
-            <p className="text-white/40 text-xs font-['Inter'] mt-2 text-right">
-              Sans engagement. Résilie quand tu veux.
-            </p>
           </div>
         </div>
-      </div>
     </section>
   )
 }

@@ -9,8 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-
-class SubscriptionConfirmed extends Mailable
+class SubscriptionExpiredMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -19,14 +18,14 @@ class SubscriptionConfirmed extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Votre abonnement GymFlow est actif !',
+            subject: 'Votre abonnement GymFlow a expiré',
         );
     }
 
     public function content(): Content
     {
         return new Content(
-            view: 'emails.subscription_confirmed',
+            view: 'emails.subscription_expired',
         );
     }
 }
