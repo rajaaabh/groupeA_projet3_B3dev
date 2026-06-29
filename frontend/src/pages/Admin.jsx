@@ -38,6 +38,7 @@ function Admin() {
     }
   }
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { fetchAll() }, [])
 
   const handleLogout = async () => {
