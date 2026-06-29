@@ -278,7 +278,7 @@ function Payment() {
     setStep('processing')
     try {
       if (plan.id) await createSubscription({ type_id: plan.id })
-    } catch (_) { /* fictive — on passe quand même */ }
+    } catch { /* fictive — on passe quand même */ }
     setTimeout(() => setStep('success'), 3000)
   }
 

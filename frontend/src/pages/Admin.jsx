@@ -18,8 +18,6 @@ function Admin() {
   const askConfirm = (message, onConfirm) => setConfirm({ open: true, message, onConfirm })
   const closeConfirm = () => setConfirm({ open: false, message: '', onConfirm: null })
 
-  useEffect(() => { fetchAll() }, [])
-
   const fetchAll = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -39,6 +37,9 @@ function Admin() {
       setLoading(false)
     }
   }
+
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => { fetchAll() }, [])
 
   const handleLogout = async () => {
     await logout()

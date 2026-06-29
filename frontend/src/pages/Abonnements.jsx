@@ -6,23 +6,23 @@ import { getSubscriptionTypes } from '../services/api'
 function Abonnements() {
   const navigate = useNavigate()
 
-  const fallback = [
-    { id: null, nom_type: 'MENSUEL',      prix: 9.99,  duree_jours: 30,  description: 'Abonnement mensuel renouvelable chaque mois.' },
-    { id: null, nom_type: 'TRIMESTRIEL',  prix: 24.99, duree_jours: 90,  description: 'Abonnement trimestriel avec une réduction de 17%.' },
-    { id: null, nom_type: 'ANNUEL',       prix: 89.99, duree_jours: 365, description: 'Abonnement annuel, la meilleure offre avec 25% de réduction.' },
-  ]
-
   const [types, setTypes] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
   useEffect(() => {
+    const fallback = [
+      { id: null, nom_type: 'MENSUEL',      prix: 9.99,  duree_jours: 30,  description: 'Abonnement mensuel renouvelable chaque mois.' },
+      { id: null, nom_type: 'TRIMESTRIEL',  prix: 24.99, duree_jours: 90,  description: 'Abonnement trimestriel avec une réduction de 17%.' },
+      { id: null, nom_type: 'ANNUEL',       prix: 89.99, duree_jours: 365, description: 'Abonnement annuel, la meilleure offre avec 25% de réduction.' },
+    ]
     getSubscriptionTypes()
       .then(data => {
         setTypes(Array.isArray(data) && data.length > 0 ? data : fallback)
         setLoading(false)
       })
       .catch(() => {
+        setError('Impossible de charger les abonnements.')
         setTypes(fallback)
         setLoading(false)
       })

@@ -78,7 +78,7 @@ class SubscriptionControllerTest extends TestCase
 
         $this->assertDatabaseHas('notifications', [
             'user_id' => $this->user->id,
-            'type' => 'abonnement',
+            'type' => 'email',
         ]);
     }
 
