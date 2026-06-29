@@ -28,4 +28,14 @@ class Subscription extends Model
     {
         return $this->hasMany(Notification::class);
     }
+
+    public function isActif(): bool
+    {
+        return $this->statut === 'actif';
+    }
+
+    public function isExpire(): bool
+    {
+        return $this->date_fin < now();
+    }
 }
