@@ -8,6 +8,7 @@ function Abonnements() {
 
   const [types, setTypes] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
   useEffect(() => {
     const fallback = [
@@ -21,6 +22,7 @@ function Abonnements() {
         setLoading(false)
       })
       .catch(() => {
+        setError('Impossible de charger les abonnements.')
         setTypes(fallback)
         setLoading(false)
       })
