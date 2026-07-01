@@ -159,7 +159,7 @@ function Admin() {
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 font-['Inter'] text-sm text-white placeholder-white/20 focus:outline-none focus:border-[#FF5500] transition-colors" />
                 </div>
                 <div>
-                  <label className="font-['Inter'] text-xs font-semibold text-white/40 uppercase tracking-wider mb-1.5 block">Prix (€) *</label>
+                  <label className="font-['Inter'] text-xs font-semibold text-white/40 uppercase tracking-wider mb-1.5 block">Prix (FCFA) *</label>
                   <input type="number" placeholder="49" value={newType.prix} onChange={e => setNewType({ ...newType, prix: e.target.value })}
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 font-['Inter'] text-sm text-white placeholder-white/20 focus:outline-none focus:border-[#FF5500] transition-colors" />
                 </div>
@@ -414,7 +414,7 @@ function Admin() {
                     <tr key={type.id} className="hover:bg-white/2 transition-colors">
                       <td className="py-4 px-8 font-['Inter'] font-semibold text-sm text-white">{type.nom_type}</td>
                       <td className="py-4 px-4 font-['Inter'] text-sm text-white/40">{type.duree_jours} jours</td>
-                      <td className="py-4 px-4 font-['Bebas_Neue'] text-lg text-[#FF5500]">{type.prix}€</td>
+                      <td className="py-4 px-4 font-['Bebas_Neue'] text-lg text-[#FF5500]">{type.prix} FCFA</td>
                       <td className="py-4 px-4 font-['Inter'] text-sm text-white/40">{type.description || '—'}</td>
                       <td className="py-4 px-4">
                         <button onClick={() => handleDeleteType(type.id)} className="px-3 py-1 bg-red-500/10 text-red-400 border border-red-500/20 rounded-lg text-xs font-['Inter'] font-semibold hover:bg-red-500/20 transition-colors">
@@ -435,7 +435,7 @@ function Admin() {
                 <div key={type.id} className="p-5 flex items-center justify-between gap-3">
                   <div className="min-w-0">
                     <p className="font-['Inter'] font-semibold text-sm text-white mb-1">{type.nom_type}</p>
-                    <p className="font-['Inter'] text-xs text-white/35">{type.duree_jours} jours · <span className="text-[#FF5500] font-['Bebas_Neue'] text-sm">{type.prix}€</span></p>
+                    <p className="font-['Inter'] text-xs text-white/35">{type.duree_jours} jours · <span className="text-[#FF5500] font-['Bebas_Neue'] text-sm">{type.prix} FCFA</span></p>
                     {type.description && <p className="font-['Inter'] text-xs text-white/25 mt-0.5 truncate">{type.description}</p>}
                   </div>
                   <button onClick={() => handleDeleteType(type.id)} className="px-2 py-1 bg-red-500/10 text-red-400 border border-red-500/20 rounded-lg text-xs font-['Inter'] font-semibold shrink-0">✕</button>

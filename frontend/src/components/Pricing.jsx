@@ -59,7 +59,7 @@ function Pricing() {
 
               <div className="mb-6">
                 <span className={`font-['Bebas_Neue'] text-6xl leading-none ${index === 1 ? 'text-white' : 'text-white'}`}>
-                  {type.prix}€
+                  {type.prix} FCFA
                 </span>
                 <span className={`font-['Inter'] text-xs ml-1 ${index === 1 ? 'text-white/70' : 'text-white/30'}`}>
                   /{type.duree_jours} jours

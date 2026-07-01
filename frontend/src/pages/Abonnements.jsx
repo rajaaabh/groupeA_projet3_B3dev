@@ -93,7 +93,7 @@ function Abonnements() {
                   </span>
 
                   <div className="font-['Bebas_Neue'] text-6xl text-white leading-none tracking-wide mb-1">
-                    {type.prix}€
+                    {type.prix} FCFA
                   </div>
 
                   <span className={`text-xs mb-5 block font-['Inter'] ${

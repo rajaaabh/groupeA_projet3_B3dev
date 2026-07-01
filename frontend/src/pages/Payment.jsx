@@ -115,7 +115,7 @@ function SuccessScreen({ navigate, plan }) {
         </p>
         <div className="pay-receipt">
           <div className="pay-receipt-row">
-            <span>Montant</span><strong>{plan.price}€</strong>
+            <span>Montant</span><strong>{plan.price} FCFA</strong>
           </div>
           <div className="pay-receipt-row">
             <span>Plan</span><strong>{plan.name} · {plan.duration}</strong>
@@ -307,7 +307,7 @@ function Payment() {
               <hr className="pay-summary-sep" />
               <div className="pay-summary-total">
                 <span>Total</span>
-                <span className="pay-summary-price">{plan.price}€</span>
+                <span className="pay-summary-price">{plan.price} FCFA</span>
               </div>
             </div>
 
@@ -449,7 +449,7 @@ function Payment() {
 
                 <button type="submit" className="pay-btn" disabled={submitting}>
                   <LockSVG />
-                  Payer {plan.price}€ maintenant
+                  Payer {plan.price} FCFA maintenant
                 </button>
 
                 <div className="pay-secure-badges">
@@ -519,12 +519,12 @@ function Payment() {
                   </svg>
                   <span>
                     Vous recevrez une notification push sur votre téléphone pour confirmer
-                    le paiement de <strong>{plan.price}€</strong>. Gardez votre téléphone à portée.
+                    le paiement de <strong>{plan.price} FCFA</strong>. Gardez votre téléphone à portée.
                   </span>
                 </div>
 
                 <button type="submit" className="pay-btn" disabled={!operator || submitting}>
-                  Envoyer la demande — {plan.price}€
+                  Envoyer la demande — {plan.price} FCFA
                 </button>
 
                 <div className="pay-secure-badges">
