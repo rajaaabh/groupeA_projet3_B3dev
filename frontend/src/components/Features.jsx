@@ -15,7 +15,7 @@ function Features() {
   ]
 
   return (
-    <section className="bg-[#111111] py-24 px-12">
+    <section className="bg-[#111111] py-24 px-6 md:px-12">
       <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-16 items-center">
         <div className="flex-1">
           <img

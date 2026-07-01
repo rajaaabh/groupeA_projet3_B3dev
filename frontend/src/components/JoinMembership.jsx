@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 function JoinMembership() {
   return (
-    <section className="relative overflow-hidden bg-[#0a0a0a] py-32 px-12">
+    <section className="relative overflow-hidden bg-[#0a0a0a] py-32 px-6 md:px-12">
       <img
         src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1920&q=80"
         alt=""

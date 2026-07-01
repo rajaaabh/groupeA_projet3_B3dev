@@ -1,6 +1,6 @@
 function WhySection() {
   return (
-    <section className="bg-[#0a0a0a] py-24 px-12" id="apropos">
+    <section className="bg-[#0a0a0a] py-24 px-6 md:px-12" id="apropos">
       <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-center">
         <div className="rounded-2xl overflow-hidden h-130">
           <img

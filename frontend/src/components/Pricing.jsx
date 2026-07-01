@@ -34,7 +34,7 @@ function Pricing() {
   const displayTypes = types.length > 0 ? types : fallback
 
   return (
-    <section className="bg-[#0f0f0f] py-24 px-12" id="abonnements">
+    <section className="bg-[#0f0f0f] py-24 px-6 md:px-12" id="abonnements">
       <h2 className="font-['Bebas_Neue'] text-5xl text-white text-center tracking-widest mb-14">
         Nos abonnements
       </h2>

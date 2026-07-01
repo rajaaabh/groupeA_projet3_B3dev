@@ -18,7 +18,7 @@ function HowItWorks() {
   ]
 
   return (
-    <section className="bg-[#0f0f0f] border-t border-b border-white/5 py-24 px-12">
+    <section className="bg-[#0f0f0f] border-t border-b border-white/5 py-24 px-6 md:px-12">
       <div className="max-w-5xl mx-auto">
 
         <div className="mb-20 text-center">

@@ -1,6 +1,6 @@
 function Testimonial() {
   return (
-    <section className="bg-[#0a0a0a] py-24 px-12">
+    <section className="bg-[#0a0a0a] py-24 px-6 md:px-12">
       <div className="max-w-3xl">
         <div className="flex gap-1 text-yellow-400 text-xl mb-8">
           {[...Array(5)].map((_, i) => <span key={i}>★</span>)}

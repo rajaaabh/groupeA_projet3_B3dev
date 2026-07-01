@@ -7,7 +7,7 @@ function Stats() {
   ]
 
   return (
-    <section className="bg-[#0f0f0f] border-t border-b border-white/5 py-16 px-12">
+    <section className="bg-[#0f0f0f] border-t border-b border-white/5 py-16 px-6 md:px-12">
       <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-10">
         {stats.map((stat) => (
           <div key={stat.value} className="text-center">

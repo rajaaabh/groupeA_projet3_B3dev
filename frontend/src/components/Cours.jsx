@@ -21,7 +21,7 @@ function Cours() {
   ]
 
   return (
-    <section className="bg-[#0a0a0a] py-24 px-12">
+    <section className="bg-[#0a0a0a] py-24 px-6 md:px-12">
       <h2 className="font-['Bebas_Neue'] text-5xl text-white text-center tracking-widest mb-14">
         Nos cours collectifs
       </h2>
