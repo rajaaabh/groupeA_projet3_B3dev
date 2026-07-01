@@ -140,7 +140,7 @@ function Dashboard() {
             <div className="flex items-center justify-between mb-6">
               <h2 className="font-['Bebas_Neue'] text-2xl text-white tracking-wide">Modifier mon profil</h2>
               <button
-                className="text-white/40 hover:text-white transition-colors px-2 py-1 rounded-md bg-transparent border-none cursor-pointer text-base"
+                className="text-white/40 hover:text-white transition-colors px-3 py-2 rounded-md bg-transparent border-none cursor-pointer text-base"
                 onClick={() => setShowProfileModal(false)}
               >✕</button>
             </div>
@@ -208,7 +208,7 @@ function Dashboard() {
               <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-[#FF5500] font-['Inter']">Mon profil</span>
               <button
                 onClick={openProfileModal}
-                className="bg-transparent border border-[#FF5500]/35 text-[#FF5500] px-3 py-0.5 rounded-md text-xs font-semibold hover:bg-[#FF5500]/10 transition-colors cursor-pointer font-['Inter']"
+                className="bg-transparent border border-[#FF5500]/35 text-[#FF5500] px-4 py-2 rounded-md text-xs font-semibold hover:bg-[#FF5500]/10 transition-colors cursor-pointer font-['Inter']"
               >Modifier</button>
             </div>
             <p className="font-['Bebas_Neue'] text-3xl text-white tracking-wide mb-1.5">{user?.name}</p>
@@ -247,7 +247,7 @@ function Dashboard() {
                     <button
                       onClick={() => setCancelTargetId(sub.id)}
                       disabled={cancelling}
-                      className="bg-transparent border border-red-500/30 text-red-400 px-2.5 py-0.5 rounded-md text-xs font-semibold hover:bg-red-500/8 hover:border-red-500/50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed font-['Inter']"
+                      className="bg-transparent border border-red-500/30 text-red-400 px-4 py-2 rounded-md text-xs font-semibold hover:bg-red-500/8 hover:border-red-500/50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed font-['Inter']"
                     >Résilier</button>
                   </div>
                 </div>

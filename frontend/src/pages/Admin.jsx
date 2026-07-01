@@ -144,7 +144,7 @@ function Admin() {
           <div className="bg-[#111111] border border-white/10 rounded-2xl w-full max-w-md p-6 md:p-8">
             <div className="flex items-center justify-between mb-6">
               <h2 className="font-['Bebas_Neue'] text-2xl text-white tracking-wide">Nouveau type</h2>
-              <button onClick={() => setShowModal(false)} className="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 text-white/50 hover:bg-white/10 transition-colors">✕</button>
+              <button onClick={() => setShowModal(false)} className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-white/50 hover:bg-white/10 transition-colors">✕</button>
             </div>
             <div className="flex flex-col gap-4">
               <div>
@@ -291,7 +291,7 @@ function Admin() {
                       {user.role}
                     </span>
                     {user.role !== 'admin' && (
-                      <button onClick={() => handleDeleteUser(user.id)} className="px-2 py-1 bg-red-500/10 text-red-400 border border-red-500/20 rounded-lg text-xs font-['Inter'] font-semibold">
+                      <button onClick={() => handleDeleteUser(user.id)} className="px-3 py-2.5 bg-red-500/10 text-red-400 border border-red-500/20 rounded-lg text-xs font-['Inter'] font-semibold">
                         ✕
                       </button>
                     )}
@@ -367,14 +367,14 @@ function Admin() {
                       <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white font-bold text-sm shrink-0">{sub.user?.name?.charAt(0).toUpperCase()}</div>
                       <span className="font-['Inter'] font-semibold text-sm text-white">{sub.user?.name}</span>
                     </div>
-                    <button onClick={() => handleDeleteSubscription(sub.id)} className="px-2 py-1 bg-red-500/10 text-red-400 border border-red-500/20 rounded-lg text-xs font-['Inter'] font-semibold">✕</button>
+                    <button onClick={() => handleDeleteSubscription(sub.id)} className="px-3 py-2.5 bg-red-500/10 text-red-400 border border-red-500/20 rounded-lg text-xs font-['Inter'] font-semibold">✕</button>
                   </div>
                   <div className="flex flex-wrap gap-2 items-center">
                     <span className="font-['Inter'] text-xs text-white/40">{sub.subscription_type?.nom_type}</span>
                     <span className="text-white/15">·</span>
                     <span className="font-['Inter'] text-xs text-white/40">{new Date(sub.date_debut).toLocaleDateString('fr-FR')} → {new Date(sub.date_fin).toLocaleDateString('fr-FR')}</span>
                     <select value={sub.statut} onChange={e => handleUpdateStatut(sub.id, e.target.value)}
-                      className={`font-['Inter'] text-xs font-semibold border rounded-full px-2 py-0.5 cursor-pointer bg-transparent ml-auto
+                      className={`font-['Inter'] text-xs font-semibold border rounded-full px-3 py-1.5 cursor-pointer bg-transparent ml-auto
                         ${sub.statut === 'actif' ? 'border-green-500/30 text-green-400 bg-green-500/10' : sub.statut === 'expiré' ? 'border-red-500/30 text-red-400 bg-red-500/10' : 'border-white/10 text-white/40 bg-white/5'}`}>
                       <option value="actif">actif</option>
                       <option value="inactif">inactif</option>
@@ -438,7 +438,7 @@ function Admin() {
                     <p className="font-['Inter'] text-xs text-white/35">{type.duree_jours} jours · <span className="text-[#FF5500] font-['Bebas_Neue'] text-sm">{type.prix} FCFA</span></p>
                     {type.description && <p className="font-['Inter'] text-xs text-white/25 mt-0.5 truncate">{type.description}</p>}
                   </div>
-                  <button onClick={() => handleDeleteType(type.id)} className="px-2 py-1 bg-red-500/10 text-red-400 border border-red-500/20 rounded-lg text-xs font-['Inter'] font-semibold shrink-0">✕</button>
+                  <button onClick={() => handleDeleteType(type.id)} className="px-3 py-2.5 bg-red-500/10 text-red-400 border border-red-500/20 rounded-lg text-xs font-['Inter'] font-semibold shrink-0">✕</button>
                 </div>
               ))}
             </div>
