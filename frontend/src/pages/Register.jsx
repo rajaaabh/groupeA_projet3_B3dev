@@ -13,6 +13,14 @@ function Register() {
     e.preventDefault()
     setError('')
     if (form.password !== form.password_confirmation) { setError('Les mots de passe ne correspondent pas.'); return }
+    
+    
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&]).{8,}$/
+    if (!passwordRegex.test(form.password)) {
+      setError('Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial (@$!%*?&).')
+      return
+    }
+
     try {
       const base = import.meta.env.VITE_API_URL || 'http://localhost:8000'
       const res = await fetch(`${base}/api/register`, {
@@ -95,7 +103,7 @@ function Register() {
             {[
               { id: 'name', label: 'Nom complet', type: 'text', placeholder: 'Jean Dupont' },
               { id: 'email', label: 'Email', type: 'email', placeholder: 'votre@email.com' },
-              { id: 'password', label: 'Mot de passe', type: 'password', placeholder: 'Minimum 8 caractères' },
+              { id: 'password', label: 'Mot de passe', type: 'password', placeholder: 'Min. 8 car., majuscule, chiffre, spécial (@$!%*?&)' },
               { id: 'password_confirmation', label: 'Confirmer le mot de passe', type: 'password', placeholder: '••••••••' },
             ].map(({ id, label, type, placeholder }) => (
               <div key={id} className="mb-4.5">
