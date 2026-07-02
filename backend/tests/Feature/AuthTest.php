@@ -11,12 +11,14 @@ class AuthTest extends TestCase
 {
     use RefreshDatabase;
 
+    private string $validPassword = 'Password1@';
+
     public function test_user_can_register()
     {
         $response = $this->postJson('/api/register', [
             'name' => 'Rajaa',
             'email' => 'rajaa@test.com',
-            'password' => '123456'
+            'password' => $this->validPassword
         ]);
 
         $response->assertStatus(201)
@@ -32,12 +34,12 @@ class AuthTest extends TestCase
         $this->postJson('/api/register', [
             'name' => 'Rajaa',
             'email' => 'rajaa@test.com',
-            'password' => '123456'
+            'password' => $this->validPassword
         ]);
 
         $response = $this->postJson('/api/login', [
             'email' => 'rajaa@test.com',
-            'password' => '123456'
+            'password' => $this->validPassword
         ]);
 
         $response->assertStatus(200)
@@ -48,12 +50,12 @@ class AuthTest extends TestCase
                  ]);
     }
 
-        public function test_user_cannot_login_with_wrong_password()
+    public function test_user_cannot_login_with_wrong_password()
     {
         $this->postJson('/api/register', [
             'name' => 'Rajaa',
             'email' => 'rajaa@test.com',
-            'password' => '123456'
+            'password' => $this->validPassword
         ]);
 
         $response = $this->postJson('/api/login', [
@@ -63,15 +65,23 @@ class AuthTest extends TestCase
 
         $response->assertStatus(401);
     }
-    
+
+    public function test_register_echoue_avec_mot_de_passe_faible()
+    {
+        $response = $this->postJson('/api/register', [
+            'name' => 'Rajaa',
+            'email' => 'rajaa@test.com',
+            'password' => '123456'
+        ]);
+
+        $response->assertStatus(422);
+    }
+
     public function test_user_can_logout()
     {
         $user = User::factory()->create();
-
         Sanctum::actingAs($user);
-
         $response = $this->postJson('/api/logout');
-
         $response->assertStatus(200);
     }
 }
