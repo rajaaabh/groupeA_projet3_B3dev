@@ -1,7 +1,5 @@
 <?php
-
 namespace Tests\Feature;
-
 use App\Models\SubscriptionType;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,38 +12,38 @@ class SubscriptionTypeControllerTest extends TestCase
 
     private function actingAsUser(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(['role' => 'user']));
+    }
+
+    private function actingAsAdmin(): void
+    {
+        Sanctum::actingAs(User::factory()->create(['role' => 'admin']));
     }
 
     public function test_index_retourne_tous_les_types(): void
     {
         $this->actingAsUser();
         SubscriptionType::create(['nom_type' => 'Mensuel', 'duree_jours' => 30, 'prix' => 9.99]);
-
         $response = $this->getJson('/api/subscription-types');
-
         $response->assertOk()->assertJsonCount(1);
     }
 
     public function test_store_cree_un_type(): void
     {
-        $this->actingAsUser();
-
+        $this->actingAsAdmin();
         $response = $this->postJson('/api/subscription-types', [
             'nom_type'    => 'Annuel',
             'duree_jours' => 365,
             'prix'        => 89.99,
             'description' => 'Offre annuelle',
         ]);
-
         $response->assertCreated()->assertJsonFragment(['nom_type' => 'Annuel']);
         $this->assertDatabaseHas('subscription_types', ['nom_type' => 'Annuel']);
     }
 
     public function test_store_echoue_sans_champs_requis(): void
     {
-        $this->actingAsUser();
-
+        $this->actingAsAdmin();
         $this->postJson('/api/subscription-types', [])->assertUnprocessable();
     }
 
@@ -53,7 +51,6 @@ class SubscriptionTypeControllerTest extends TestCase
     {
         $this->actingAsUser();
         $type = SubscriptionType::create(['nom_type' => 'Mensuel', 'duree_jours' => 30, 'prix' => 9.99]);
-
         $this->getJson("/api/subscription-types/{$type->id}")
             ->assertOk()
             ->assertJsonFragment(['nom_type' => 'Mensuel']);
@@ -61,9 +58,8 @@ class SubscriptionTypeControllerTest extends TestCase
 
     public function test_update_modifie_un_type(): void
     {
-        $this->actingAsUser();
+        $this->actingAsAdmin();
         $type = SubscriptionType::create(['nom_type' => 'Mensuel', 'duree_jours' => 30, 'prix' => 9.99]);
-
         $this->putJson("/api/subscription-types/{$type->id}", ['prix' => 12.99])
             ->assertOk()
             ->assertJsonFragment(['prix' => 12.99]);
@@ -71,9 +67,8 @@ class SubscriptionTypeControllerTest extends TestCase
 
     public function test_destroy_supprime_un_type(): void
     {
-        $this->actingAsUser();
+        $this->actingAsAdmin();
         $type = SubscriptionType::create(['nom_type' => 'Mensuel', 'duree_jours' => 30, 'prix' => 9.99]);
-
         $this->deleteJson("/api/subscription-types/{$type->id}")->assertNoContent();
         $this->assertDatabaseMissing('subscription_types', ['id' => $type->id]);
     }
@@ -81,5 +76,15 @@ class SubscriptionTypeControllerTest extends TestCase
     public function test_non_authentifie_retourne_401(): void
     {
         $this->getJson('/api/subscription-types')->assertUnauthorized();
+    }
+
+    public function test_user_normal_ne_peut_pas_creer_type(): void
+    {
+        $this->actingAsUser();
+        $this->postJson('/api/subscription-types', [
+            'nom_type'    => 'Test',
+            'duree_jours' => 30,
+            'prix'        => 9.99,
+        ])->assertForbidden();
     }
 }

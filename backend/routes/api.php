@@ -8,6 +8,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\SubscriptionTypeController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\AdminMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +21,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 /*
 |--------------------------------------------------------------------------
-| Routes protégées par Sanctum
+| Routes protégées par Sanctum (tous les utilisateurs connectés)
 |--------------------------------------------------------------------------
 */
 
@@ -32,12 +33,28 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
 
-    Route::apiResource('subscription-types', SubscriptionTypeController::class);
+
+    Route::get('subscription-types', [SubscriptionTypeController::class, 'index']);
+    Route::get('subscription-types/{subscriptionType}', [SubscriptionTypeController::class, 'show']);
 
     Route::apiResource('subscriptions', SubscriptionController::class);
 
     Route::apiResource('notifications', NotificationController::class);
 
-    Route::get('/users', [UserController::class, 'index']);
-    Route::delete('/users/{user}', [UserController::class, 'destroy']);
+    /*
+    |--------------------------------------------------------------------------
+    | Routes Admin uniquement
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware(AdminMiddleware::class)->group(function () {
+
+
+        Route::post('subscription-types', [SubscriptionTypeController::class, 'store']);
+        Route::put('subscription-types/{subscriptionType}', [SubscriptionTypeController::class, 'update']);
+        Route::delete('subscription-types/{subscriptionType}', [SubscriptionTypeController::class, 'destroy']);
+
+
+        Route::get('/users', [UserController::class, 'index']);
+        Route::delete('/users/{user}', [UserController::class, 'destroy']);
+    });
 });
