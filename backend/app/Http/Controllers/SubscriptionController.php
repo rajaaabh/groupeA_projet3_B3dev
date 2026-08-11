@@ -14,11 +14,13 @@ class SubscriptionController extends Controller
 {
     public function index(Request $request)
     {
-        return response()->json(
-            Subscription::with(['subscriptionType'])
-                ->where('user_id', $request->user()->id)
-                ->get()
-        );
+        $query = Subscription::with(['subscriptionType', 'user']);
+
+        if ($request->user()->role !== 'admin') {
+            $query->where('user_id', $request->user()->id);
+        }
+
+        return response()->json($query->get());
     }
 
     public function store(Request $request)
